@@ -1,0 +1,22 @@
+image: mcr.microsoft.com/dotnet/sdk:8.0
+
+acceptance_test_dotnet:
+  extends: .acceptance_test
+  variables:
+    DOCKERFILE: Dockerfile
+
+build:
+  stage: build
+  script:
+    - dotnet build
+  only:
+    - merge_requests
+    - master
+
+lint:
+  stage: validate
+  script:
+    - dotnet format --verify-no-changes
+  only:
+    - merge_requests
+    - master

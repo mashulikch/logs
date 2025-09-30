@@ -1,0 +1,38 @@
+include:
+  - local: "deploy/ci.yml"
+
+stages:
+  - pre
+  - build
+  - validate
+  - test
+
+show_variables:
+  stage: pre
+  script:
+    - printenv | sort
+
+module_tests:
+  stage: test
+  needs:
+    - job: build
+      artifacts: true
+  script:
+    - mvn clean verify
+
+.acceptance_test:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:8.0
+  needs:
+    - job: module_tests
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "master"
+      when: always
+      allow_failure: false
+    - when: never
+  before_script:
+    - apt-get install jq
+    - dotnet publish -c Release -o app
+
+  script:
+    - sh ./scripts/run_acceptance_tests.sh
