@@ -2,7 +2,7 @@ namespace Logs.Test;
 
 public class LogFileParsingTests
 {
-    [Fact(DisplayName =  "На вход передан валидный локальный log-файл")]
+    [Fact(DisplayName = "На вход передан валидный локальный log-файл")]
     public void LocalFileProcessingTest()
     {
         Assert.Fail("Not implemented yet");
