@@ -1,5 +1,17 @@
 image: mcr.microsoft.com/dotnet/sdk:8.0
 
+module_test:
+  stage: test
+  needs:
+    - job: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "master"
+      when: always
+      allow_failure: false
+    - when: never
+  script:
+    - dontet test
+
 acceptance_test_dotnet:
   extends: .acceptance_test
   variables:
