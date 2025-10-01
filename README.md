@@ -378,15 +378,9 @@ dotnet run --project ./src/LogsApp/Logs.csproj --path logs/*.log --format markdo
 - Расчет кол-ва уникальных протоколов передачи данных в логах - 5 б.
 
 ## Полезные ссылки
-
-- https://www.baeldung.com/java-read-lines-large-file
-- https://openjdk.org/groups/net/httpclient/recipes.html
-- https://www.baeldung.com/jackson-object-mapper-tutorial
-- https://github.com/commonmark/commonmark-java
+- https://learn.microsoft.com/en-us/dotnet/standard/io/how-to-read-text-from-a-file
+- https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/deserialization
 - https://www.baeldung.com/linux/status-codes
-- https://www.baeldung.com/java-unit-testing-best-practices
-- https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html#readLine--
-- https://commons.apache.org/proper/commons-io/javadocs/api-2.5/org/apache/commons/io/LineIterator.html
 - Подробнее о том, что такое перцентили и как их можно расчитать:
     - https://habr.com/ru/companies/tochka/articles/690814/
     - https://en.wikipedia.org/wiki/Percentile
