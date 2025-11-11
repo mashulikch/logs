@@ -57,49 +57,49 @@ function runTest {
 echo "Running negative tests..."
 
 runTest "negative" "input file does not exist" 2 \
-  -p /tmp/input/nonexistent.txt -f json -o ${pwd}/scripts/data/output/output1.json
+  -p ${PWD}/scripts/data/input/nonexistent.txt -f json -o ${PWD}/scripts/data/output/output1.json
 
 runTest "negative" "input file has unsupported extension" 2 \
-  -p /tmp/inpit/file1.log -f json -o ${pwd}/scripts/data/output/output2.json
+  -p ${PWD}/scripts/data/input/file1.log -f json -o ${PWD}/scripts/data/output/output2.json
 
 runTest "negative" "output file already exists" 2 \
-  -p /tmp/inpit/file2.txt -f json -o ${pwd}/scripts/data/output/existing.json
+  -p ${PWD}/scripts/data/input/file2.txt -f json -o ${PWD}/scripts/data/output/existing.json
 
 runTest "negative" "output file has unsupported extension (JSON)" 2 \
-  -p /tmp/inpit/file2.txt -f json -o ${pwd}/scripts/data/output/output4.txt
+  -p ${PWD}/scripts/data/input/file2.txt -f json -o ${PWD}/scripts/data/output/output4.txt
 
 runTest "negative" "output file has unsupported extension (MD)" 2 \
-  -p /tmp/inpit/file2.txt -f markdown -o ${pwd}/scripts/data/output/output5.txt
+  -p ${PWD}/scripts/data/input/file2.txt -f markdown -o ${PWD}/scripts/data/output/output5.txt
 
 runTest "negative" "output file has unsupported extension (AD)" 2 \
-  -p /tmp/inpit/file2.txt -f adoc -o ${pwd}/scripts/data/output/output6.txt
+  -p ${PWD}/scripts/data/input/file2.txt -f adoc -o ${PWD}/scripts/data/output/output6.txt
 
 runTest "negative" "unsupported output format" 2 \
-  -p /tmp/inpit/file2.txt -f txt -o ${pwd}/scripts/data/output/output7.txt
+  -p ${PWD}/scripts/data/input/file2.txt -f txt -o ${PWD}/scripts/data/output/output7.txt
 
 runTest "negative" "invalid date format (--from)" 2 \
-  -p /tmp/inpit/file2.txt -f txt -o ${pwd}/scripts/data/output/output8.json --from="2025.01.02"
+  -p ${PWD}/scripts/data/input/file2.txt -f txt -o ${PWD}/scripts/data/output/output8.json --from="2025.01.02"
 
 runTest "negative" "invalid date format (--to)" 2 \
-  -p /tmp/inpit/file2.txt -f txt -o ${pwd}/scripts/data/output/output9.json --to="2025.01.02"
+  -p ${PWD}/scripts/data/input/file2.txt -f txt -o ${PWD}/scripts/data/output/output9.json --to="2025.01.02"
 
 runTest "negative" "--from > --to" 2 \
-  -p /tmp/inpit/file2.txt -f txt -o ${pwd}/scripts/data/output/output10.json --from="2025-01-02" --to="2025-01-01"
+  -p ${PWD}/scripts/data/input/file2.txt -f txt -o ${PWD}/scripts/data/output/output10.json --from="2025-01-02" --to="2025-01-01"
 
 runTest "negative" "required parameter -p is missing" 2 \
-  -f json -o ${pwd}/scripts/data/output/output11.json
+  -f json -o ${PWD}/scripts/data/output/output11.json
 
 runTest "negative" "required parameter -f is missing" 2 \
-  -p /tmp/input/nonexistent.txt -o ${pwd}/scripts/data/output/output12.json
+  -p ${PWD}/scripts/data/input/nonexistent.txt -o ${PWD}/scripts/data/output/output12.json
 
 runTest "negative" "required parameter -o is missing" 2 \
-  -p /tmp/input/nonexistent.txt -f json -o ${pwd}/scripts/data/output/output13.json
+  -p ${PWD}/scripts/data/input/nonexistent.txt -f json -o ${PWD}/scripts/data/output/output13.json
 
 runTest "negative" "unsupported parameter is present" 2 \
-  -p /tmp/input/nonexistent.txt -f json -o ${pwd}/scripts/data/output/output14.json --custom=argument
+  -p ${PWD}/scripts/data/input/nonexistent.txt -f json -o ${PWD}/scripts/data/output/output14.json --custom=argument
 
 runTest "positive" "properly calculate statistics from multiple local files" 0 \
-  -p /tmp/input/logs**.txt -f json -o ${pwd}/scripts/data/output/stats.json
+  -p ${PWD}/scripts/data/input/logs/**.txt -f json -o ${PWD}/scripts/data/output/stats.json
 
 assertJsonEquals ./scripts/data/output/expected.json ./scripts/data/output/stats.json
 
