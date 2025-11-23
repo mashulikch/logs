@@ -124,7 +124,7 @@ public sealed class LogProcessor
         if (to is not null && ts > to.Value) return false;
         return true;
     }
-
+    
     private static bool HasWildcards(string path) =>
         path.IndexOfAny(new[] { '*', '?' }) >= 0;
 }

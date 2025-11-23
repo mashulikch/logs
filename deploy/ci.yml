@@ -10,7 +10,7 @@ module_test:
       allow_failure: false
     - when: never
   script:
-    - dontet test
+    - dotnet test
 
 acceptance_test_dotnet:
   extends: .acceptance_test
