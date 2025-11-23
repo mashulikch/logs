@@ -22,7 +22,7 @@ public sealed class LogStatisticsReport
 
 public sealed class ResponseSizeSummary
 {
-    public int Average { get; set; }
+    public double Average { get; set; }
     public int Max { get; set; }
     public int P95 { get; set; }
 }
@@ -62,7 +62,23 @@ public sealed class StatsAccumulator
     public DateTime? FirstRequest { get; private set; }
     public DateTime? LastRequest { get; private set; }
 
-    public void AddFile(string file) => Files.Add(file);
+    public void AddFile(string file)
+    {
+        if (string.IsNullOrWhiteSpace(file))
+        {
+            return;
+        }
+
+        if (Uri.TryCreate(file, UriKind.Absolute, out var uri) &&
+             (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+        {
+            Files.Add(file);
+        }
+        else
+        {
+            Files.Add(Path.GetFileName(file));
+        }
+    }
 
     public void Add(LogEntry entry)
     {
@@ -114,7 +130,12 @@ public sealed class StatsAccumulator
             Resources = BuildResources(),
             ResponseCodes = BuildCodes(),
             RequestsPerDate = BuildRequestsPerDate(),
-            UniqueProtocols = _protocols.Count == 0 ? null : _protocols.OrderBy(p => p, StringComparer.Ordinal).ToList(),
+            UniqueProtocols = _protocols.Count == 0
+                ? null
+                : _protocols
+                    .OrderBy(p => p == "HTTP/1.1" ? 0 : 1)
+                    .ThenBy(p => p, StringComparer.Ordinal)
+                    .ToList(),
             FirstRequestDate = FirstRequest,
             LastRequestDate = LastRequest
         };
@@ -134,7 +155,7 @@ public sealed class StatsAccumulator
 
         return new ResponseSizeSummary
         {
-            Average = (int)Math.Round(avg, MidpointRounding.AwayFromZero),
+            Average = Math.Round(avg, 2, MidpointRounding.AwayFromZero),
             Max = (int)MaxSize,
             P95 = (int)p95
         };
