@@ -1,0 +1,60 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Logs/1.0.0": {
+        "dependencies": {
+          "Serilog": "3.1.0",
+          "Serilog.Sinks.Console": "4.1.0"
+        },
+        "runtime": {
+          "Logs.dll": {}
+        }
+      },
+      "Serilog/3.1.0": {
+        "runtime": {
+          "lib/net7.0/Serilog.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "3.1.0.0"
+          }
+        }
+      },
+      "Serilog.Sinks.Console/4.1.0": {
+        "dependencies": {
+          "Serilog": "3.1.0"
+        },
+        "runtime": {
+          "lib/net5.0/Serilog.Sinks.Console.dll": {
+            "assemblyVersion": "4.1.0.0",
+            "fileVersion": "4.1.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Logs/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Serilog/3.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UPJGG8Hz12obhtAELHb0q83j0YpO1vGCypUbH0P4wMZnrpcqmrSLhHkZ/4Ojc+iNVpLwZ/wPBVC3lwSzzoZ/MQ==",
+      "path": "serilog/3.1.0",
+      "hashPath": "serilog.3.1.0.nupkg.sha512"
+    },
+    "Serilog.Sinks.Console/4.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-K6N5q+5fetjnJPvCmkWOpJ/V8IEIoMIB1s86OzBrbxwTyHxdx3pmz4H+8+O/Dc/ftUX12DM1aynx/dDowkwzqg==",
+      "path": "serilog.sinks.console/4.1.0",
+      "hashPath": "serilog.sinks.console.4.1.0.nupkg.sha512"
+    }
+  }
+}
