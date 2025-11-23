@@ -55,7 +55,9 @@ public class StatsReportTests
         finally
         {
             if (Directory.Exists(tempDir))
+            {
                 Directory.Delete(tempDir, true);
+            }
         }
     }
 
@@ -87,7 +89,9 @@ public class StatsReportTests
         finally
         {
             if (Directory.Exists(tempDir))
+            {
                 Directory.Delete(tempDir, true);
+            }
         }
     }
 
@@ -119,7 +123,9 @@ public class StatsReportTests
         finally
         {
             if (Directory.Exists(tempDir))
+            {
                 Directory.Delete(tempDir, true);
+            }
         }
     }
 }

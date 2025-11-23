@@ -71,7 +71,9 @@ public sealed class StatsAccumulator
         _sizes.Add(entry.BodyBytesSent);
         TotalSize += entry.BodyBytesSent;
         if (entry.BodyBytesSent > MaxSize)
+        {
             MaxSize = entry.BodyBytesSent;
+        }
 
         if (!string.IsNullOrEmpty(entry.Resource))
         {
@@ -87,13 +89,19 @@ public sealed class StatsAccumulator
         _requestsPerDate[d] = perDateCount + 1;
 
         if (!string.IsNullOrEmpty(entry.Protocol))
+        {
             _protocols.Add(entry.Protocol);
+        }
 
         if (FirstRequest is null || entry.Timestamp < FirstRequest)
+        {
             FirstRequest = entry.Timestamp;
+        }
 
         if (LastRequest is null || entry.Timestamp > LastRequest)
+        {
             LastRequest = entry.Timestamp;
+        }
     }
 
     public LogStatisticsReport BuildReport()
@@ -117,7 +125,9 @@ public sealed class StatsAccumulator
     private ResponseSizeSummary BuildSizeSummary()
     {
         if (_sizes.Count == 0)
+        {
             return new ResponseSizeSummary();
+        }
 
         var avg = (double)TotalSize / _sizes.Count;
         var p95 = CalculatePercentile(_sizes, 0.95);
@@ -133,7 +143,9 @@ public sealed class StatsAccumulator
     private static long CalculatePercentile(List<long> values, double percentile)
     {
         if (values.Count == 0)
+        {
             return 0;
+        }
 
         var sorted = values.OrderBy(v => v).ToArray();
         var rank = percentile * (sorted.Length - 1);
@@ -141,7 +153,9 @@ public sealed class StatsAccumulator
         var highIndex = (int)Math.Ceiling(rank);
 
         if (lowIndex == highIndex)
+        {
             return sorted[lowIndex];
+        }
 
         var weight = rank - lowIndex;
         return (long)Math.Round(sorted[lowIndex] * (1 - weight) + sorted[highIndex] * weight);
@@ -173,7 +187,9 @@ public sealed class StatsAccumulator
     private List<RequestPerDateEntry>? BuildRequestsPerDate()
     {
         if (_requestsPerDate.Count == 0 || TotalRequestsCount == 0)
+        {
             return null;
+        }
 
         return _requestsPerDate
             .OrderBy(kv => kv.Key)

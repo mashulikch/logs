@@ -61,7 +61,9 @@ public class ArgumentValidationTests
         finally
         {
             if (File.Exists(tmpFile))
+            {
                 File.Delete(tmpFile);
+            }
         }
     }
 
@@ -104,7 +106,9 @@ public class ArgumentValidationTests
         finally
         {
             if (File.Exists(tmpFile))
+            {
                 File.Delete(tmpFile);
+            }
         }
     }
 
@@ -130,7 +134,9 @@ public class ArgumentValidationTests
         finally
         {
             if (File.Exists(tmpFile))
+            {
                 File.Delete(tmpFile);
+            }
         }
     }
 
@@ -158,9 +164,14 @@ public class ArgumentValidationTests
         finally
         {
             if (File.Exists(tmpFile))
+            {
                 File.Delete(tmpFile);
+            }
+
             if (File.Exists(existingOutput))
+            {
                 File.Delete(existingOutput);
+            }
         }
     }
 
@@ -213,7 +224,9 @@ public class ArgumentValidationTests
         finally
         {
             if (File.Exists(tmpFile))
+            {
                 File.Delete(tmpFile);
+            }
         }
     }
 

@@ -31,7 +31,10 @@ public static class ArgumentParser
 
     public static AppOptions Parse(string[] args)
     {
-        if (args is null) throw new ArgumentNullException(nameof(args));
+        if (args is null)
+        {
+            throw new ArgumentNullException(nameof(args));
+        }
 
         var options = new AppOptions();
 
@@ -84,7 +87,9 @@ public static class ArgumentParser
             string NextValue()
             {
                 if (i + 1 >= args.Length)
+                {
                     throw new UsageException($"Argument '{arg}' requires a value");
+                }
 
                 return args[++i];
             }
@@ -124,19 +129,28 @@ public static class ArgumentParser
 
                 default:
                     if (arg.StartsWith("-", StringComparison.Ordinal))
+                    {
                         throw new UsageException($"Unsupported argument '{arg}'");
+                    }
+
                     break;
             }
         }
 
         if (options.Paths.Count == 0)
+        {
             throw new UsageException("Required argument '--path' is missing");
+        }
 
         if (string.IsNullOrWhiteSpace(options.Output))
+        {
             throw new UsageException("Required argument '--output' is missing");
-        
+        }
+
         if (options.From is not null && options.To is not null && options.From >= options.To)
+        {
             throw new UsageException("Parameter '--from' must be less than '--to'");
+        }
 
         ValidateOutputPath(options.Output, options.Format);
         ValidateInputPaths(options.Paths);
@@ -162,10 +176,14 @@ public static class ArgumentParser
     {
         var directory = Path.GetDirectoryName(outputPath);
         if (string.IsNullOrEmpty(directory))
+        {
             directory = Directory.GetCurrentDirectory();
+        }
 
         if (!Directory.Exists(directory))
+        {
             throw new UsageException($"Output directory '{directory}' does not exist");
+        }
 
         var ext = Path.GetExtension(outputPath).ToLowerInvariant();
 
@@ -178,11 +196,15 @@ public static class ArgumentParser
         };
 
         if (!string.Equals(ext, expectedExt, StringComparison.OrdinalIgnoreCase))
+        {
             throw new UsageException(
                 $"Output file extension '{ext}' does not match expected '{expectedExt}' for selected format");
+        }
 
         if (File.Exists(outputPath))
+        {
             throw new UsageException($"Output file '{outputPath}' already exists");
+        }
     }
 
     private static void ValidateInputPaths(IEnumerable<string> paths)
@@ -207,36 +229,48 @@ public static class ArgumentParser
             {
                 var dir = Path.GetDirectoryName(path);
                 if (string.IsNullOrEmpty(dir))
+                {
                     dir = Directory.GetCurrentDirectory();
+                }
 
                 if (!Directory.Exists(dir))
+                {
                     throw new UsageException(
                         $"Directory '{dir}' not found for pattern '{path}'");
+                }
 
                 var pattern = Path.GetFileName(path);
                 var files = Directory.EnumerateFiles(dir, pattern).ToList();
 
                 if (files.Count == 0)
+                {
                     throw new UsageException(
                         $"No files matched path pattern '{path}'");
+                }
 
                 foreach (var file in files)
                 {
                     var ext = Path.GetExtension(file);
                     if (!SupportedInputExtensions.Contains(ext))
+                    {
                         throw new UsageException(
                             $"File '{file}' has unsupported extension '{ext}'");
+                    }
                 }
             }
             else
             {
                 if (!File.Exists(path))
+                {
                     throw new UsageException($"File '{path}' not found");
+                }
 
                 var ext = Path.GetExtension(path);
                 if (!SupportedInputExtensions.Contains(ext))
+                {
                     throw new UsageException(
                         $"File '{path}' has unsupported extension '{ext}'");
+                }
             }
         }
     }

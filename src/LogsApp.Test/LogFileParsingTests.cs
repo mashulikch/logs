@@ -49,7 +49,9 @@ public class LogFileParsingTests
         finally
         {
             if (Directory.Exists(tempDir))
+            {
                 Directory.Delete(tempDir, true);
+            }
         }
     }
 
@@ -116,7 +118,9 @@ public class LogFileParsingTests
         finally
         {
             if (Directory.Exists(tempDir))
+            {
                 Directory.Delete(tempDir, true);
+            }
         }
     }
 
@@ -156,7 +160,9 @@ public class LogFileParsingTests
         finally
         {
             if (Directory.Exists(tempDir))
+            {
                 Directory.Delete(tempDir, true);
+            }
         }
     }
 }

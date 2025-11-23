@@ -41,7 +41,9 @@ public sealed class LogProcessor
         {
             var dir = Path.GetDirectoryName(path);
             if (string.IsNullOrEmpty(dir))
+            {
                 dir = Directory.GetCurrentDirectory();
+            }
 
             var pattern = Path.GetFileName(path);
 
@@ -92,10 +94,14 @@ public sealed class LogProcessor
         using var response = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).Result;
 
         if (response.StatusCode == HttpStatusCode.NotFound)
+        {
             throw new UsageException($"Remote file '{url}' not found (404)");
+        }
 
         if (!response.IsSuccessStatusCode)
+        {
             throw new UsageException($"Remote file '{url}' returned status {(int)response.StatusCode}");
+        }
 
         using var stream = response.Content.ReadAsStreamAsync().Result;
         using var reader = new StreamReader(stream);
@@ -110,21 +116,33 @@ public sealed class LogProcessor
     private static void ProcessLine(string line, AppOptions options, StatsAccumulator acc)
     {
         if (!NginxLogParser.TryParse(line, out var entry) || entry is null)
+        {
             return;
+        }
 
         if (!IsWithinRange(entry.Timestamp, options.From, options.To))
+        {
             return;
+        }
 
         acc.Add(entry);
     }
 
     private static bool IsWithinRange(DateTime ts, DateTime? from, DateTime? to)
     {
-        if (from is not null && ts < from.Value) return false;
-        if (to is not null && ts > to.Value) return false;
+        if (from is not null && ts < from.Value)
+        {
+            return false;
+        }
+
+        if (to is not null && ts > to.Value)
+        {
+            return false;
+        }
+
         return true;
     }
-    
+
     private static bool HasWildcards(string path) =>
         path.IndexOfAny(new[] { '*', '?' }) >= 0;
 }
