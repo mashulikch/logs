@@ -21,6 +21,7 @@ public sealed class AppOptions
 public sealed class UsageException : Exception
 {
     public UsageException(string message) : base(message) { }
+
     public UsageException(string message, Exception inner) : base(message, inner) { }
 }
 
@@ -41,6 +42,7 @@ public static class ArgumentParser
         for (var i = 0; i < args.Length; i++)
         {
             var arg = args[i];
+
             if (arg.StartsWith("--from=", StringComparison.Ordinal))
             {
                 var value = arg.Substring("--from=".Length);
@@ -72,15 +74,16 @@ public static class ArgumentParser
             if (arg.StartsWith("--format=", StringComparison.Ordinal))
             {
                 var value = arg.Substring("--format=".Length);
-                var formatStr = value.ToLowerInvariant();
-                options.Format = formatStr switch
+                var inlineFormat = value.ToLowerInvariant();
+                options.Format = inlineFormat switch
                 {
                     "json" => OutputFormat.Json,
                     "markdown" => OutputFormat.Markdown,
                     "md" => OutputFormat.Markdown,
                     "adoc" => OutputFormat.Adoc,
-                    _ => throw new UsageException($"Unsupported output format '{formatStr}'")
+                    _ => throw new UsageException($"Unsupported output format '{inlineFormat}'")
                 };
+
                 continue;
             }
 
@@ -98,8 +101,23 @@ public static class ArgumentParser
             {
                 case "--path":
                 case "-p":
-                    options.Paths.Add(NextValue());
+                {
+                    if (i + 1 >= args.Length)
+                    {
+                        throw new UsageException($"Argument '{arg}' requires at least one value");
+                    }
+
+                    var j = i + 1;
+
+                    while (j < args.Length && !args[j].StartsWith("-", StringComparison.Ordinal))
+                    {
+                        options.Paths.Add(args[j]);
+                        j++;
+                    }
+
+                    i = j - 1;
                     break;
+                }
 
                 case "--output":
                 case "-o":
@@ -108,6 +126,7 @@ public static class ArgumentParser
 
                 case "--format":
                 case "-f":
+                {
                     var formatStr = NextValue().ToLowerInvariant();
                     options.Format = formatStr switch
                     {
@@ -118,6 +137,7 @@ public static class ArgumentParser
                         _ => throw new UsageException($"Unsupported output format '{formatStr}'")
                     };
                     break;
+                }
 
                 case "--from":
                     options.From = ParseIsoDate(NextValue(), "--from");
