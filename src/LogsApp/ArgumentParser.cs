@@ -101,23 +101,23 @@ public static class ArgumentParser
             {
                 case "--path":
                 case "-p":
-                {
-                    if (i + 1 >= args.Length)
                     {
-                        throw new UsageException($"Argument '{arg}' requires at least one value");
+                        if (i + 1 >= args.Length)
+                        {
+                            throw new UsageException($"Argument '{arg}' requires a value");
+                        }
+
+                        var j = i + 1;
+
+                        while (j < args.Length && !args[j].StartsWith("-", StringComparison.Ordinal))
+                        {
+                            options.Paths.Add(args[j]);
+                            j++;
+                        }
+
+                        i = j - 1;
+                        break;
                     }
-
-                    var j = i + 1;
-
-                    while (j < args.Length && !args[j].StartsWith("-", StringComparison.Ordinal))
-                    {
-                        options.Paths.Add(args[j]);
-                        j++;
-                    }
-
-                    i = j - 1;
-                    break;
-                }
 
                 case "--output":
                 case "-o":
@@ -126,18 +126,18 @@ public static class ArgumentParser
 
                 case "--format":
                 case "-f":
-                {
-                    var formatStr = NextValue().ToLowerInvariant();
-                    options.Format = formatStr switch
                     {
-                        "json" => OutputFormat.Json,
-                        "markdown" => OutputFormat.Markdown,
-                        "md" => OutputFormat.Markdown,
-                        "adoc" => OutputFormat.Adoc,
-                        _ => throw new UsageException($"Unsupported output format '{formatStr}'")
-                    };
-                    break;
-                }
+                        var formatStr = NextValue().ToLowerInvariant();
+                        options.Format = formatStr switch
+                        {
+                            "json" => OutputFormat.Json,
+                            "markdown" => OutputFormat.Markdown,
+                            "md" => OutputFormat.Markdown,
+                            "adoc" => OutputFormat.Adoc,
+                            _ => throw new UsageException($"Unsupported output format '{formatStr}'")
+                        };
+                        break;
+                    }
 
                 case "--from":
                     options.From = ParseIsoDate(NextValue(), "--from");
