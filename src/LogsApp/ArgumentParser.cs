@@ -167,9 +167,14 @@ public static class ArgumentParser
             throw new UsageException("Required argument '--output' is missing");
         }
 
-        if (options.From is not null && options.To is not null && options.From >= options.To)
+        if (options.From is not null && options.To is not null)
         {
-            throw new UsageException("Parameter '--from' must be less than '--to'");
+            var fromDate = DateOnly.FromDateTime(options.From.Value);
+            var toDate = DateOnly.FromDateTime(options.To.Value);
+            if (fromDate > toDate)
+            {
+                throw new UsageException("Parameter '--from' must be less than '--to'");
+            }
         }
 
         ValidateOutputPath(options.Output, options.Format);
