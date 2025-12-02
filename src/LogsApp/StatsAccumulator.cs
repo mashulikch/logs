@@ -9,8 +9,8 @@ public sealed class LogStatisticsReport
     public ResponseSizeSummary ResponseSizeInBytes { get; set; } = new();
     public List<ResourceEntry> Resources { get; set; } = new();
     public List<ResponseCodeEntry> ResponseCodes { get; set; } = new();
-    public List<RequestPerDateEntry>? RequestsPerDate { get; set; }
-    public List<string>? UniqueProtocols { get; set; }
+    public List<RequestPerDateEntry>? RequestsPerDate { get; set; } = new();
+    public List<string>? UniqueProtocols { get; set; } = new();
 
     // вспомогательные поля только для markdown/adoc
     [System.Text.Json.Serialization.JsonIgnore]
@@ -22,7 +22,7 @@ public sealed class LogStatisticsReport
 
 public sealed class ResponseSizeSummary
 {
-    public double Average { get; set; }
+    public int Average { get; set; }
     public int Max { get; set; }
     public int P95 { get; set; }
 }
@@ -130,9 +130,7 @@ public sealed class StatsAccumulator
             Resources = BuildResources(),
             ResponseCodes = BuildCodes(),
             RequestsPerDate = BuildRequestsPerDate(),
-            UniqueProtocols = _protocols.Count == 0
-                ? null
-                : _protocols
+            UniqueProtocols = _protocols
                     .OrderBy(p => p == "HTTP/1.1" ? 0 : 1)
                     .ThenBy(p => p, StringComparer.Ordinal)
                     .ToList(),
@@ -155,7 +153,7 @@ public sealed class StatsAccumulator
 
         return new ResponseSizeSummary
         {
-            Average = Math.Round(avg, 2, MidpointRounding.AwayFromZero),
+            Average = (int)Math.Round(avg, 2, MidpointRounding.AwayFromZero),
             Max = (int)MaxSize,
             P95 = (int)p95
         };
@@ -209,7 +207,7 @@ public sealed class StatsAccumulator
     {
         if (_requestsPerDate.Count == 0 || TotalRequestsCount == 0)
         {
-            return null;
+            return new List<RequestPerDateEntry>();
         }
 
         return _requestsPerDate

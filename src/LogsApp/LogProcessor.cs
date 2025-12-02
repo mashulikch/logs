@@ -130,14 +130,24 @@ public sealed class LogProcessor
 
     private static bool IsWithinRange(DateTime ts, DateTime? from, DateTime? to)
     {
-        if (from is not null && ts < from.Value)
+        var date = DateOnly.FromDateTime(ts);
+
+        if (from is not null)
         {
-            return false;
+            var fromDate = DateOnly.FromDateTime(from.Value);
+            if (date < fromDate)
+            {
+                return false;
+            }
         }
 
-        if (to is not null && ts > to.Value)
+        if (to is not null)
         {
-            return false;
+            var toDate = DateOnly.FromDateTime(to.Value);
+            if (date > toDate)
+            {
+                return false;
+            }
         }
 
         return true;
