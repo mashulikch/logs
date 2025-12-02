@@ -22,7 +22,7 @@ public sealed class LogStatisticsReport
 
 public sealed class ResponseSizeSummary
 {
-    public int Average { get; set; }
+    public double Average { get; set; }
     public int Max { get; set; }
     public int P95 { get; set; }
 }
@@ -153,7 +153,7 @@ public sealed class StatsAccumulator
 
         return new ResponseSizeSummary
         {
-            Average = (int)Math.Round(avg, 2, MidpointRounding.AwayFromZero),
+            Average = Math.Round(avg, 2, MidpointRounding.AwayFromZero),
             Max = (int)MaxSize,
             P95 = (int)p95
         };
